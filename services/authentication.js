@@ -15,5 +15,10 @@ function generateToken(user){
   return token;
 }
 
+function validateToken(token){
+  const payload = JWT.verify(token, secret);
+  return payload;
+}
 
-module.exports = {generateToken};
+
+module.exports = {generateToken, validateToken};
