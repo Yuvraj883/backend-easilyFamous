@@ -1,5 +1,5 @@
 const {Schema, model} = require('mongoose');
-const {createHmac, randomBytes} = require('crypto'); 
+const {createHmac, randomBytes} = require('crypto');
 const userSchema = Schema({
 fullName: {
   type:String,
@@ -26,3 +26,14 @@ salt:{
 },{timestamps:true});
 
 
+
+userSchema.pre('save', function(next){
+  const user = this;
+
+if(!user.isModified(user.password)) return;
+const salt = randomBytes(16).toString('hex');
+const hashedPassword = createHmac('sha256', salt).update(user.password).digest('hex');
+this.salt = salt;
+this.password = user.password;
+next();
+})
