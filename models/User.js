@@ -37,3 +37,6 @@ this.salt = salt;
 this.password = user.password;
 next();
 })
+
+const User = model("User", userSchema);
+module.exports = User;
