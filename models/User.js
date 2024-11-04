@@ -1,5 +1,6 @@
-const { Schema, model } = require('mongoose')
-const { createHmac, randomBytes } = require('crypto')
+const { Schema, model } = require('mongoose');
+const { createHmac, randomBytes } = require('crypto');
+const {generateToken} = require('../services/authentication'); 
 const userSchema = Schema(
   {
     fullName: {
@@ -51,7 +52,7 @@ User.static('matchPasswordAndGenerateToken', async function(email, password){
     throw new Error("Wrong password");
   }
  const token = generateToken(user);
- return token; 
+ return token;
 
 })
 
