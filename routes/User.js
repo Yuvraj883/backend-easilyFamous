@@ -18,18 +18,22 @@ router.post('/sign-in', async (req, res)=>{
 });
 
 router.post('/sign-up', async(req,res)=>{
-  const {fullName, email, password} = req.body;
-  const newUser = await User.create({
-    fullName,
-    email,
-    password,
-  });
-  const token = generateToken(newUser);
-  res.cookie('token', token, {
-    httpOnly: true,
+  try {
+    const { fullName, email, password } = req.body;
+    const newUser = await User.create({ fullName, email, password });
+    const token = generateToken(newUser);
+
+    
+    res.cookie('token', token, {
+      httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
       sameSite: 'strict',
-  }).redirect('/');
+    });
+    res.status(200).send({ message: "Sign-up successful", token });
+  } catch (error) {
+    console.error("Error during sign-up:", error);
+    res.status(500).send({ message: "Internal server error" });
+  }
 });
 
 
