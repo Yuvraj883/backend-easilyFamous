@@ -11,7 +11,7 @@ function generateToken(user){
     email: user.email,
     profileImage: user.profileImage
   }
-  const token = JWT.sign(payload, secret, {expiresIn:'2h'});
+  const token = JWT.sign(payload, secret, {expiresIn:'72h'});
   return token;
 }
 
