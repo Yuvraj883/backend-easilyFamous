@@ -1,7 +1,7 @@
+require('dotenv').config()
 const express = require('express')
 const mongoose = require('mongoose')
 const app = express()
-require('dotenv').config()
 const userRoute = require('./src/routes/User')
 const User = require('./src/models/User')
 const bodyParser = require('body-parser')
@@ -25,8 +25,11 @@ const logger = winston.createLogger({
   ],
 })
 
+app.use(bodyParser.json())
 app.use(helmet())
 app.use(cors())
+
+app.set('trust proxy', 1)
 
 mongoose
   .connect(process.env.MONGO_URI)
