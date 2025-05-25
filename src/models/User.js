@@ -1,6 +1,6 @@
-const { Schema, model } = require('mongoose');
-const { createHmac, randomBytes } = require('crypto');
-const { generateToken } = require('../../services/authentication');
+const { Schema, model } = require('mongoose')
+const { createHmac, randomBytes } = require('crypto')
+const { generateToken } = require('../services/authServices')
 
 const userSchema = Schema(
   {
@@ -25,36 +25,49 @@ const userSchema = Schema(
     salt: {
       type: String,
     },
+    token: {
+      type: Number,
+    },
+    subscribed: {
+      type: Boolean,
+    },
   },
   { timestamps: true }
-);
+)
 
 // Pre-save hook to hash the password
 userSchema.pre('save', function (next) {
-  if (!this.isModified('password')) return next();
+  if (!this.isModified('password')) return next()
 
-  const salt = randomBytes(16).toString('hex');
-  const hashedPassword = createHmac('sha256', salt).update(this.password).digest('hex');
-  this.salt = salt;
-  this.password = hashedPassword;
-  next();
-});
+  const salt = randomBytes(16).toString('hex')
+  const hashedPassword = createHmac('sha256', salt)
+    .update(this.password)
+    .digest('hex')
+  this.salt = salt
+  this.password = hashedPassword
+  next()
+})
 
 // Static method to match password and generate token
-userSchema.static('matchPasswordAndGenerateToken', async function (email, password) {
-  const user = await this.findOne({ email });
-  if (!user) {
-    throw new Error("User doesn't exist");
+userSchema.static(
+  'matchPasswordAndGenerateToken',
+  async function (email, password) {
+    const user = await this.findOne({ email })
+    if (!user) {
+      throw new Error("User doesn't exist")
+    }
+
+    const hashedPassword = createHmac('sha256', user.salt)
+      .update(password)
+      .digest('hex')
+    if (hashedPassword !== user.password) {
+      throw new Error('Wrong password')
+    }
+
+    const token = generateToken(user)
+    return token
   }
+)
 
-  const hashedPassword = createHmac('sha256', user.salt).update(password).digest('hex');
-  if (hashedPassword !== user.password) {
-    throw new Error("Wrong password");
-  }
-
-  const token = generateToken(user);
-  return token;
-});
-
-const User = model('User', userSchema);
-module.exports = User;
+const User = model('User', userSchema)
+module.exports = User
