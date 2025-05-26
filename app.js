@@ -25,14 +25,16 @@ const logger = winston.createLogger({
   ],
 })
 
-app.use(bodyParser.json())
+app.use(express.json())
 app.use(helmet())
-app.use(cors({
-  origin: process.env.CORS_ORIGIN,
-  methods: ['GET', 'POST', 'PUT', 'DELETE'],
-  allowedHeaders: ['Content-Type', 'Authorization'],
-  credentials: true,
-}))
+app.use(
+  cors({
+    origin: process.env.CORS_ORIGIN,
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
+    credentials: true,
+  })
+)
 
 app.set('trust proxy', 1)
 
