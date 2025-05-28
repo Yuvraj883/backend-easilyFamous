@@ -1,17 +1,18 @@
-require('dotenv').config()
-const express = require('express')
-const mongoose = require('mongoose')
+import dotenv from 'dotenv'
+dotenv.config()
+import express from 'express'
+import mongoose from 'mongoose'
 const app = express()
-const userRoute = require('./src/routes/User')
-const User = require('./src/models/User')
-const bodyParser = require('body-parser')
-const cors = require('cors')
-const rateLimit = require('express-rate-limit')
-const orderRoutes = require('./src/routes/proxy')
-const axios = require('axios')
-const apiV2ProxyRoute = require('./src/routes/apiV2Proxy')
-const helmet = require('helmet')
-const winston = require('winston')
+import userRoute from './src/routes/User.js'
+import User from './src/models/User.js'
+import bodyParser from 'body-parser'
+import cors from 'cors'
+import rateLimit from 'express-rate-limit'
+import orderRoutes from './src/routes/proxy.js'
+import axios from 'axios'
+import apiV2ProxyRoute from './src/routes/apiV2Proxy.js'
+import helmet from 'helmet'
+import winston from 'winston'
 
 // Set up Winston logger
 const logger = winston.createLogger({
@@ -31,8 +32,8 @@ app.use((req, res, next) => {
 
 app.use(express.json())
 app.use(helmet())
-const allowedOrigins = process.env.CORS_ORIGINS?.split(',') || []
-
+const allowedOrigins = process.env.CORS_ORIGIN?.split(',') || []
+console.log('AllowedOrigin:', allowedOrigins)
 const corsOptions = {
   origin: function (origin, callback) {
     console.log(origin)
@@ -124,4 +125,4 @@ process.on('unhandledRejection', (reason, promise) => {
   // process.exit(1) // Consider graceful shutdown/restart
 })
 
-module.exports = app
+export default app
