@@ -24,6 +24,10 @@ const logger = winston.createLogger({
     // new winston.transports.File({ filename: 'combined.log' }),
   ],
 })
+app.use((req, res, next) => {
+  console.log('🔍 Origin Header:', req.headers.origin)
+  next()
+})
 
 app.use(express.json())
 app.use(helmet())
