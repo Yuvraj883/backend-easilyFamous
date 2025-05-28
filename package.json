@@ -2,6 +2,7 @@
   "name": "backend-easilyfamous",
   "version": "1.0.0",
   "main": "index.js",
+  "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "nodemon app.js",
@@ -23,7 +24,6 @@
     "express-rate-limit": "^7.5.0",
     "express-validator": "^7.2.1",
     "helmet": "^8.1.0",
-    "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.10.0",
     "winston": "^3.17.0"
   }

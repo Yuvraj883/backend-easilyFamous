@@ -1,9 +1,9 @@
-const express = require("express");
-const OrderController = require("../controllers/proxy");
+import express from 'express'
+import OrderController from '../controllers/proxy.js'
 
-const router = express.Router();
+const router = express.Router()
 
-router.post("/create", OrderController.createOrder); // POST: Create Order
-router.get("/status", OrderController.getOrderStatus); // GET: Check Order Status
+router.post('/create', OrderController.createOrder) // POST: Create Order
+router.get('/status', OrderController.getOrderStatus) // GET: Check Order Status
 
-module.exports = router;
+export default router

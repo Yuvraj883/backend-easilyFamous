@@ -1,9 +1,9 @@
-const express = require('express')
+import express from 'express'
 const router = express.Router()
-const axios = require('axios')
-const rateLimit = require('express-rate-limit')
-const { body, query, validationResult } = require('express-validator') // Import express-validator
-const winston = require('winston') // Import winston
+import axios from 'axios'
+import rateLimit from 'express-rate-limit'
+import { body, query, validationResult } from 'express-validator' // Import express-validator
+import winston from 'winston' // Import winston
 
 // Assuming you have a logger instance in app.js, you can either pass it
 // or create a new one here. For simplicity, let's create one for this file.
@@ -100,4 +100,4 @@ router.get('/', apiV2Limiter, getValidation, async (req, res) => {
   }
 })
 
-module.exports = router
+export default router

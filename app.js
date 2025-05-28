@@ -3,8 +3,6 @@ dotenv.config()
 import express from 'express'
 import mongoose from 'mongoose'
 const app = express()
-import userRoute from './src/routes/User.js'
-import User from './src/models/User.js'
 import bodyParser from 'body-parser'
 import cors from 'cors'
 import rateLimit from 'express-rate-limit'
@@ -25,19 +23,13 @@ const logger = winston.createLogger({
     // new winston.transports.File({ filename: 'combined.log' }),
   ],
 })
-app.use((req, res, next) => {
-  console.log('🔍 Origin Header:', req.headers.origin)
-  next()
-})
 
 app.use(express.json())
 app.use(helmet())
 const allowedOrigins = process.env.CORS_ORIGIN?.split(',') || []
-console.log('AllowedOrigin:', allowedOrigins)
+// console.log("AllowedOrigin:", allowedOrigins);
 const corsOptions = {
   origin: function (origin, callback) {
-    console.log(origin)
-    console.log(allowedOrigins)
     if (!origin || allowedOrigins.includes(origin)) {
       callback(null, true)
     } else {
@@ -63,15 +55,15 @@ mongoose
   })
 
 const PORT = process.env.PORT || 8000
-app.use(express.json())
+// app.use(express.json())
 
 // Log requests (optional, but helpful)
-app.use((req, res, next) => {
-  logger.info(`${req.method} ${req.url}`)
-  next()
-})
+// app.use((req, res, next) => {
+//   logger.info(`${req.method} ${req.url}`);
+//   next();
+// });
 
-app.use('/user', userRoute)
+// app.use('/user', userRoute); // Removed user authentication route
 app.get('/', async (req, res) => {
   // const user = await User.create({
   //   fullName:"Yuvraj Singh",
