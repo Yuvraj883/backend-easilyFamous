@@ -27,18 +27,18 @@ const logger = winston.createLogger({
 
 app.use(express.json())
 app.use(helmet())
-const allowedOrigins = process.env.ALLOWED_ORIGINS?.split(',') || [];
+const allowedOrigins = process.env.CORS_ORIGINS?.split(',') || []
 
 const corsOptions = {
   origin: function (origin, callback) {
     if (!origin || allowedOrigins.includes(origin)) {
-      callback(null, true);
+      callback(null, true)
     } else {
-      callback(new Error('Not allowed by CORS'));
+      callback(new Error('Not allowed by CORS'))
     }
   },
   credentials: true,
-};
+}
 app.use(cors(corsOptions))
 
 app.set('trust proxy', 1)
